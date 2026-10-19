@@ -28,6 +28,10 @@
     <input id="plantingDate" name="plantingDate" type="date">
     <p class="field-message" id="plantingDate-msg" role="alert"></p>
 
+    <label for="place">Where is your farm? (nearest town or place)</label>
+    <input id="place" name="place" type="text" autocomplete="off">
+    <p class="field-message" id="place-msg" role="alert"></p>
+
     <h2>Your soil report</h2>
 
     <label for="ph">pH</label>
@@ -52,7 +56,14 @@
       <button type="button" id="confirm-fix" class="secondary">Let me fix it</button>
     </div>
 
+    <div id="weather-box" class="confirm" hidden>
+      <p id="weather-text"></p>
+      <button type="button" id="weather-retry">Try again</button>
+      <button type="button" id="weather-continue" class="secondary">Continue with typical conditions</button>
+    </div>
+
     <button type="submit" id="estimate-btn">Show my estimate</button>
+    <p id="status" role="status"></p>
   </form>
 
   <section id="result" hidden>

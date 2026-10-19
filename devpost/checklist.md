@@ -9,7 +9,7 @@ Build mode: learn
 
 ## Slices
 
-- [ ] **1. You can fill in the farm form and see a yield estimate range**
+- [x] **1. You can fill in the farm form and see a yield estimate range**
   Becomes usable: A page served locally where he types acres, pH, N, P, K, variety, and planting date, taps the estimate button, and sees low-to-high tonnes per acre plus the total, labeled as a sample-data estimate. Weather uses typical-condition values for now; unusual or blank entries show the friendly check.
   Why now: This is the unique kernel, an estimate from his own inputs, and it proves the whole path end to end (scaffold, form, checks, calculation, result). Every later slice improves it.
   PRD ref: `prd.md > Farm details`, `prd.md > Yield estimate`, `prd.md > States and Boundaries`, `prd.md > Look and Feel`
@@ -19,7 +19,7 @@ Build mode: learn
   Learner check: Open `http://localhost:8000`, fill the form, tap the estimate, and say whether it looks and feels the way you pictured. Try typing a pH of 40 and see what message appears.
   Commit: `Add farm form and sample-data yield estimate`
 
-- [ ] **2. The estimate uses real weather for a place you type**
+- [x] **2. The estimate uses real weather for a place you type**
   Becomes usable: He types a place name, the app finds its coordinates, fetches rainfall and temperature since the planting date, and the estimate responds to the live weather. If the lookup fails he sees "try again" and can continue on typical conditions, with a wider range.
   Why now: The weather request is the one outside dependency and the biggest unknown, so it goes right after the kernel exists. It also lets you see the raw reply and the console log.
   PRD ref: `prd.md > Location and weather`, `prd.md > States and Boundaries`
@@ -71,7 +71,7 @@ Build mode: learn
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — after slice 2, when the estimate responds to real weather
+- [x] Early usable behavior explored — after slice 2, when the estimate responds to real weather
 - [ ] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
@@ -93,3 +93,4 @@ Activity mode: not started
 ## Revisions
 
 - Impossible values (a pH of 40, zero or negative acres) now ask the farmer to correct them instead of offering "are you sure?" — the build found that an estimate calculated from an impossible number would be meaningless. Merely unusual values (a pH of 3, 800 acres) still get the friendly "are you sure?" with confirm or fix, as the PRD describes.
+- Rainfall is compared with what the crop needs for its age so far, not a whole season — the build found that comparing rain since planting with a full season's need would wrongly mark every young crop as "too dry". The estimate now takes the crop's age in days along with the weather.

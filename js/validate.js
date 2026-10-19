@@ -45,6 +45,10 @@ export function validateVariety(raw) {
   return String(raw ?? '').trim() === '' ? missing('your cane variety') : ok;
 }
 
+export function validatePlace(raw) {
+  return String(raw ?? '').trim() === '' ? missing('where your farm is') : ok;
+}
+
 export function validatePlantingDate(raw, today = new Date()) {
   if (!raw) return missing('the planting date');
   const planted = new Date(raw);
@@ -65,5 +69,6 @@ export function validateAll(values, today = new Date()) {
     k: validateNutrient(values.k, 'the potassium value'),
     variety: validateVariety(values.variety),
     plantingDate: validatePlantingDate(values.plantingDate, today),
+    place: validatePlace(values.place),
   };
 }

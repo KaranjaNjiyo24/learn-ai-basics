@@ -51,6 +51,8 @@ button:focus { outline: 3px solid var(--brown); outline-offset: 2px; }
 
 .confirm { margin-top: 16px; padding: 12px; border: 2px solid var(--brown); }
 .confirm[hidden] { display: none; }
+#status { margin: 8px 0 0; font-style: italic; }
+#status:empty { display: none; }
 .confirm p { margin: 0; }
 
 #result { margin-top: 24px; padding: 12px; border: 2px solid var(--green); }

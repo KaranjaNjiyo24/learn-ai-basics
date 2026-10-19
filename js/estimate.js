@@ -14,8 +14,9 @@ function nutrientFactor(kind, value) {
   return nutrientBands[kind].find((b) => value < b.below).factor;
 }
 
-function rainFactor(totalMm) {
-  const ratio = totalMm / rainfall.neededMm;
+function rainFactor(totalMm, ageDays) {
+  const share = Math.min(ageDays, rainfall.seasonDays) / rainfall.seasonDays;
+  const ratio = totalMm / (rainfall.neededMm * share);
   return rainfall.bands.find((b) => ratio < b.ratioBelow).factor;
 }
 
@@ -31,7 +32,7 @@ export function estimate(inputs, weather) {
     n: nutrientFactor('n', Number(inputs.n)),
     p: nutrientFactor('p', Number(inputs.p)),
     k: nutrientFactor('k', Number(inputs.k)),
-    rain: rainFactor(weather.rainfallTotalMm),
+    rain: rainFactor(weather.rainfallTotalMm, weather.ageDays),
   };
   const combined = Object.values(factors).reduce((a, b) => a * b, 1);
 

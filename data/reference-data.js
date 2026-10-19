@@ -26,9 +26,11 @@ export const nutrientBands = {
   k: [{ below: 100, factor: 0.92 }, { below: Infinity, factor: 1.0 }],
 };
 
-// Rainfall over the season so far, compared with what the crop needs.
+// Rainfall since planting, compared with what the crop needs for its age so far.
+// neededMm is for a whole season of seasonDays; a younger crop needs a proportional share.
 export const rainfall = {
   neededMm: 1200,
+  seasonDays: 365,
   bands: [
     { ratioBelow: 0.6, factor: 0.8 },
     { ratioBelow: 0.8, factor: 0.9 },
@@ -37,8 +39,8 @@ export const rainfall = {
   ],
 };
 
-// Used when live weather is unavailable.
-export const typicalWeather = { rainfallTotalMm: 1200, avgTempC: 24 };
+// Used when live weather is unavailable: typical conditions, per day since planting.
+export const typicalWeather = { rainfallPerDayMm: 1200 / 365, avgTempC: 24 };
 
 // Extra spread added when the weather is not live.
 export const widenWhenNotLive = { low: 0.9, high: 1.1 };
