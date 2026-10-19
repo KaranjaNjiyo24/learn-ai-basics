@@ -1,0 +1,66 @@
+/* Exact flat colors only: no tints, shades, or gradients. */
+:root {
+  --brown: #964B00;
+  --green: #008000;
+  --white: #FFFFFF;
+}
+
+* { box-sizing: border-box; border-radius: 0; }
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--brown);
+  font-family: "Times New Roman", Times, serif;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+main { max-width: 480px; margin: 0 auto; padding: 16px; }
+
+h1 { font-size: 2.2rem; margin: 8px 0 0; }
+h2 { font-size: 1.3rem; margin: 24px 0 8px; border-bottom: 2px solid var(--brown); }
+header p { margin: 0 0 8px; }
+
+label { display: block; margin-top: 12px; font-weight: bold; }
+
+input {
+  width: 100%;
+  padding: 8px;
+  font: inherit;
+  color: var(--brown);
+  background: var(--white);
+  border: 2px solid var(--brown);
+}
+input:focus { outline: 3px solid var(--green); }
+
+button {
+  font: inherit;
+  padding: 8px 16px;
+  margin-top: 16px;
+  color: var(--white);
+  background: var(--green);
+  border: 2px solid var(--green);
+  cursor: pointer;
+}
+button.secondary { color: var(--brown); background: var(--white); border-color: var(--brown); }
+button:focus { outline: 3px solid var(--brown); outline-offset: 2px; }
+
+.field-message { margin: 4px 0 0; min-height: 0; font-style: italic; }
+.field-message:empty { display: none; }
+
+.confirm { margin-top: 16px; padding: 12px; border: 2px solid var(--brown); }
+.confirm[hidden] { display: none; }
+.confirm p { margin: 0; }
+
+#result { margin-top: 24px; padding: 12px; border: 2px solid var(--green); }
+#result[hidden] { display: none; }
+#result h2 { margin-top: 0; border-color: var(--green); color: var(--green); }
+.big { font-size: 1.6rem; font-weight: bold; margin: 4px 0; }
+.label { font-style: italic; }
+
+details { margin-top: 12px; }
+summary { cursor: pointer; font-weight: bold; }
+table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+td { border-bottom: 1px solid var(--brown); padding: 4px 0; }
+td:last-child { text-align: right; }

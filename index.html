@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shamba Bora</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<main>
+  <header>
+    <h1>Shamba Bora</h1>
+    <p>Know what to expect from your sugarcane before harvest.</p>
+  </header>
+
+  <form id="farm-form" novalidate>
+    <h2>Your farm</h2>
+
+    <label for="acres">Acres of cane</label>
+    <input id="acres" name="acres" type="number" inputmode="decimal" step="any">
+    <p class="field-message" id="acres-msg" role="alert"></p>
+
+    <label for="variety">Cane variety</label>
+    <input id="variety" name="variety" type="text" autocomplete="off">
+    <p class="field-message" id="variety-msg" role="alert"></p>
+
+    <label for="plantingDate">When did you plant?</label>
+    <input id="plantingDate" name="plantingDate" type="date">
+    <p class="field-message" id="plantingDate-msg" role="alert"></p>
+
+    <h2>Your soil report</h2>
+
+    <label for="ph">pH</label>
+    <input id="ph" name="ph" type="number" inputmode="decimal" step="any">
+    <p class="field-message" id="ph-msg" role="alert"></p>
+
+    <label for="n">Nitrogen</label>
+    <input id="n" name="n" type="number" inputmode="decimal" step="any">
+    <p class="field-message" id="n-msg" role="alert"></p>
+
+    <label for="p">Phosphorus</label>
+    <input id="p" name="p" type="number" inputmode="decimal" step="any">
+    <p class="field-message" id="p-msg" role="alert"></p>
+
+    <label for="k">Potassium</label>
+    <input id="k" name="k" type="number" inputmode="decimal" step="any">
+    <p class="field-message" id="k-msg" role="alert"></p>
+
+    <div id="confirm-box" class="confirm" hidden>
+      <p id="confirm-text"></p>
+      <button type="button" id="confirm-yes">Yes, it is correct</button>
+      <button type="button" id="confirm-fix" class="secondary">Let me fix it</button>
+    </div>
+
+    <button type="submit" id="estimate-btn">Show my estimate</button>
+  </form>
+
+  <section id="result" hidden>
+    <h2>Your estimate</h2>
+    <p class="big" id="result-per-acre"></p>
+    <p id="result-total"></p>
+    <p class="label" id="result-label"></p>
+    <details>
+      <summary>How this was worked out</summary>
+      <div id="result-detail"></div>
+    </details>
+  </section>
+</main>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

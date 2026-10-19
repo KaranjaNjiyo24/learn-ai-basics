@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shamba Bora — Technical Spec</title>
+<style>
+:root{--bg:#f4efe6;--card:#fbf8f1;--ink:#2b2a22;--muted:#6b6455;--accent:#5a6b2f;--soft:#e8e3d1;--line:#cfc7b0}
+@media (prefers-color-scheme:dark){:root{--bg:#1b1a14;--card:#25241b;--ink:#ece7d6;--muted:#a79f88;--accent:#a7bd62;--soft:#33311f;--line:#46432c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Times New Roman",Times,serif}
+main{max-width:900px;margin:0 auto;padding:24px 16px 64px}
+h1{margin:0 0 4px;font-size:2.1rem}
+.tag{display:inline-block;background:var(--soft);color:var(--accent);padding:2px 12px;font-size:.85rem;font-weight:bold;border:1px solid var(--line)}
+section{background:var(--card);border:1px solid var(--line);padding:18px 20px;margin:18px 0}
+h2{margin:0 0 8px;font-size:1.2rem;color:var(--accent)}
+svg{width:100%;height:auto}
+svg text{fill:var(--ink);font:13px "Times New Roman",serif}
+.box{fill:var(--soft);stroke:var(--accent);stroke-width:1.5}
+.ext{fill:var(--card);stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4}
+.arrow{stroke:var(--accent);stroke-width:2;fill:none}
+.steps{display:flex;gap:8px;margin:8px 0}
+.steps button{font:inherit;border:1px solid var(--line);background:var(--soft);color:var(--ink);padding:6px 14px;cursor:pointer}
+.stepbox{border:1px solid var(--line);padding:12px;background:var(--bg);min-height:110px}
+details{border:1px solid var(--line);padding:8px 12px;margin:8px 0}
+summary{cursor:pointer;font-weight:bold}
+code,pre{font-family:ui-monospace,Consolas,monospace;font-size:.88rem}
+pre{background:var(--soft);padding:12px;overflow:auto;border:1px solid var(--line)}
+.sw{display:inline-block;width:26px;height:16px;border:1px solid var(--line);vertical-align:middle}
+</style>
+</head>
+<body>
+<main>
+<h1>Shamba Bora — Technical Spec</h1>
+<span class="tag">Spec draft — for your review</span>
+
+<section>
+<h2>How it works, in plain language</h2>
+<p>A small website that runs entirely in the browser: no server of our own and no database. The browser provides the date picker and the "Allow location?" prompt. Open-Meteo, a free weather service, is the only outside piece. A labeled <b>sample</b> reference table plus a short calculation turns his inputs into a low-to-high range. A log writes technical messages to the browser's developer console (F12) so errors can be checked.</p>
+</section>
+
+<section>
+<h2>Architecture</h2>
+<svg viewBox="0 0 820 260" role="img" aria-label="Browser page with modules, talking to Open-Meteo and the browser location prompt">
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5a6b2f"/></marker></defs>
+<rect x="10" y="10" width="560" height="240" fill="none" stroke="#5a6b2f" stroke-width="1.5"/><text x="20" y="30">In the browser (your app)</text>
+<rect class="box" x="30" y="50" width="130" height="50"/><text x="95" y="80" text-anchor="middle">Form + checks</text>
+<rect class="box" x="190" y="50" width="130" height="50"/><text x="255" y="80" text-anchor="middle">location.js</text>
+<rect class="box" x="350" y="50" width="130" height="50"/><text x="415" y="80" text-anchor="middle">weather.js</text>
+<rect class="box" x="190" y="150" width="130" height="50"/><text x="255" y="180" text-anchor="middle">estimate.js</text>
+<rect class="box" x="350" y="150" width="130" height="50"/><text x="415" y="180" text-anchor="middle">note + money</text>
+<rect class="box" x="30" y="150" width="130" height="50"/><text x="95" y="175" text-anchor="middle">reference-data.js</text><text x="95" y="190" text-anchor="middle" style="font-size:11px">(SAMPLE)</text>
+<rect class="ext" x="640" y="50" width="170" height="50"/><text x="725" y="80" text-anchor="middle">Open-Meteo (weather)</text>
+<rect class="ext" x="640" y="150" width="170" height="50"/><text x="725" y="172" text-anchor="middle">Browser location</text><text x="725" y="188" text-anchor="middle">prompt</text>
+<path class="arrow" d="M160 75 L190 75" marker-end="url(#a)"/><path class="arrow" d="M320 75 L350 75" marker-end="url(#a)"/>
+<path class="arrow" d="M480 75 L640 75" marker-end="url(#a)"/>
+<path class="arrow" d="M415 100 L300 150" marker-end="url(#a)"/><path class="arrow" d="M160 175 L190 175" marker-end="url(#a)"/><path class="arrow" d="M320 175 L350 175" marker-end="url(#a)"/>
+<path class="arrow" d="M255 100 L255 100"/><path class="arrow" d="M640 175 L330 95" stroke-dasharray="4 4" marker-end="url(#a)"/>
+</svg>
+</section>
+
+<section>
+<h2>Step through the journey</h2>
+<div class="steps"><button id="prev">← Back</button><button id="next">Next →</button><span id="count" style="align-self:center"></span></div>
+<div class="stepbox" id="step"></div>
+</section>
+
+<section>
+<h2>Stack and how to run</h2>
+<ul>
+<li>Plain HTML, CSS, JavaScript (ES modules). No framework, no build step.</li>
+<li>Run: <code>python3 -m http.server 8000</code>, then open <code>http://localhost:8000</code>.</li>
+<li>Open-Meteo (weather, geocoding) and the browser Geolocation API. <b>URLs and terms unverified; check first in the build.</b></li>
+</ul>
+</section>
+
+<section>
+<h2>Look and feel</h2>
+<p><span class="sw" style="background:#964B00"></span> <code>#964B00</code> text, borders, buttons · <span class="sw" style="background:#008000"></span> <code>#008000</code> animation and main action · <span class="sw" style="background:#fff"></span> <code>#FFFFFF</code> background. Square corners, Times New Roman, flat, no gradients. (The colors on this review page are softer on purpose.)</p>
+</section>
+
+<section>
+<h2>Components</h2>
+<details><summary>intro.js — animation and fact pop-up</summary><p>CSS/SVG growth animation, then one verified fact with a close button. <i>PRD: Opening animation and "Did you know?"</i></p></details>
+<details><summary>validate.js — checks</summary><p>Each field is ok, missing, or unusual; unusual shows "That looks unusual — are you sure?" <i>PRD: Farm details, States and Boundaries</i></p></details>
+<details><summary>location.js — location</summary><p>Browser prompt first; if refused, a typed place name looked up by geocoding (my recommendation, awaiting your agreement). <i>PRD: Location and weather</i></p></details>
+<details><summary>weather.js — weather</summary><p>Daily rainfall and temperature from planting date to today; totals the rainfall and averages the temperature. Failure returns typical values with <code>isLive: false</code>. <i>PRD: Location and weather</i></p></details>
+<details><summary>estimate.js — the range</summary><p>Baseline low–high for the variety → one factor each for pH, N, P, K, and rainfall → multiply the factors → apply to baseline → widen if weather isn't live. <i>PRD: Yield estimate</i></p></details>
+<details><summary>note.js, money.js, log.js</summary><p>Rule-written planning note; income range and price comparison (built last); console logging with timestamps. <i>PRD: Planning note, Money, States and Boundaries</i></p></details>
+</section>
+
+<section>
+<h2>File structure</h2>
+<pre>shamba-bora/
+├── index.html
+├── css/styles.css
+├── js/ app.js intro.js validate.js location.js
+│       weather.js estimate.js note.js money.js log.js
+├── data/ reference-data.js (SAMPLE)  facts.js (verified)
+├── devpost/
+└── README.md</pre>
+</section>
+
+<section>
+<h2>Failure modes, simplifications, open issues</h2>
+<details open><summary>Failure modes</summary><ul><li>Location refused → type a place name</li><li>Place not found → "try a nearby town"</li><li>Weather fails → "try again" or continue on typical conditions, wider range</li><li>Odd or blank input → friendly check</li></ul></details>
+<details><summary>Simplified</summary><ul><li>Sample reference table instead of a trained model</li><li>Nothing saved between visits</li><li>Typed soil values, not OCR</li><li>Rule-written note, not AI</li><li>Local run and recording, not deployed</li></ul></details>
+<details><summary>Open issues</summary><ul><li>Verify Open-Meteo URLs, terms, and recent-data approach</li><li>Choose sample numbers, labeled SAMPLE</li><li>Your task: 3–5 verified facts with sources</li><li>Place-name fallback and local server run: your agreement</li></ul></details>
+<p><b>What you asked to understand</b> (logging, location prompt, weather lookup, numbers to range) is planned to be <i>shown</i> in the build: the console log, the browser prompt, the raw weather reply, and a step-through of the factors.</p>
+</section>
+</main>
+<script>
+var steps=[
+["1 · Opening","Cane grows, then one verified fact appears. He closes it."],
+["2 · Form","He types acres, pH, N, P, K, variety, and picks the planting date. Unusual numbers get “are you sure?”."],
+["3 · Location","Browser asks “Allow location?”. If he refuses, he types a place name and it is looked up."],
+["4 · Weather","The page asks Open-Meteo for rainfall and temperature since planting. Failure → try again, or typical conditions."],
+["5 · Estimate","Baseline range × factors (pH, N, P, K, rainfall) → low and high tonnes per acre, then the total. A planning note is written from the numbers."],
+["6 · Result","Range, total, note, and the label: estimate from sample reference data, not real harvest records."],
+["7 · Money (last)","With prices entered: expected income range, and the new price compared with last season’s."]];
+var i=0;function show(){document.getElementById('step').innerHTML='<b>'+steps[i][0]+'</b><p>'+steps[i][1]+'</p>';document.getElementById('count').textContent=(i+1)+' / '+steps.length;}
+document.getElementById('prev').onclick=function(){i=(i+steps.length-1)%steps.length;show()};
+document.getElementById('next').onclick=function(){i=(i+1)%steps.length;show()};show();
+</script>
+</body>
+</html>

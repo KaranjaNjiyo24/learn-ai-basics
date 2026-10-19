@@ -1,0 +1,6 @@
+{
+  "name": "shamba-bora",
+  "private": true,
+  "type": "module",
+  "description": "Shamba Bora: a pre-harvest sugarcane yield estimate for a farmer's own land."
+}

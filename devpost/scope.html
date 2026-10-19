@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cane Yield Planner — Scope</title>
+<style>
+:root{--bg:#f6f7f2;--card:#fff;--ink:#1d2a1f;--muted:#5b6b5e;--accent:#2f7d4f;--soft:#e4f1e8;--warn:#b5651d;--cut:#a33a3a;--line:#d8ddd2}
+@media (prefers-color-scheme:dark){:root{--bg:#121a14;--card:#1b261e;--ink:#e8efe9;--muted:#9bb0a0;--accent:#5cc58a;--soft:#223a2b;--warn:#e0a060;--cut:#e07a7a;--line:#2f3f33}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,sans-serif}
+main{max-width:860px;margin:0 auto;padding:24px 16px 64px}
+h1{margin:0 0 4px;font-size:2rem}
+.draft{display:inline-block;background:var(--soft);color:var(--accent);border-radius:99px;padding:2px 12px;font-size:.8rem;font-weight:600}
+.lead{color:var(--muted);font-size:1.1rem}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:18px 0}
+h2{margin:0 0 8px;font-size:1.15rem;color:var(--accent)}
+blockquote{margin:8px 0;padding:8px 14px;border-left:4px solid var(--accent);background:var(--soft);border-radius:4px}
+svg{width:100%;height:auto}
+svg text{fill:var(--ink);font:13px system-ui,sans-serif}
+.box{fill:var(--soft);stroke:var(--accent);stroke-width:1.5}
+.arrow{stroke:var(--accent);stroke-width:2;fill:none}
+details{border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+.now summary{color:var(--accent)}.later summary{color:var(--warn)}.cut summary{color:var(--cut)}
+ul{margin:8px 0 4px;padding-left:20px}
+.mock{border:2px solid var(--line);border-radius:18px;max-width:300px;margin:12px auto;padding:14px;background:var(--bg)}
+.mock .row{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding:4px 0;font-size:.9rem}
+.mock .out{background:var(--soft);border-radius:8px;padding:10px;margin-top:10px;text-align:center}
+.mock .out b{font-size:1.2rem}
+</style>
+</head>
+<body>
+<main>
+<h1>Cane Yield Planner</h1>
+<span class="draft">Draft — for your review</span>
+<p class="lead">A phone-friendly app that gives a sugarcane farmer an honest pre-harvest estimate of what his land will produce, so he can plan money and labor.</p>
+
+<section>
+<h2>How it fits together</h2>
+<svg viewBox="0 0 800 210" role="img" aria-label="Flow: farmer enters acres, soil, variety; phone location gives weather; app produces a yield range and planning note">
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f7d4f"/></marker></defs>
+<rect class="box" x="10" y="20" width="190" height="70" rx="10"/>
+<text x="105" y="48" text-anchor="middle">Farmer enters</text><text x="105" y="68" text-anchor="middle">acres · soil · variety</text>
+<rect class="box" x="10" y="120" width="190" height="70" rx="10"/>
+<text x="105" y="148" text-anchor="middle">Phone location</text><text x="105" y="168" text-anchor="middle">→ rainfall &amp; temperature</text>
+<rect class="box" x="300" y="65" width="200" height="80" rx="10"/>
+<text x="400" y="95" text-anchor="middle">Reference-based</text><text x="400" y="115" text-anchor="middle">yield estimate</text><text x="400" y="133" text-anchor="middle" style="font-size:11px">(adjusted by inputs)</text>
+<rect class="box" x="600" y="65" width="190" height="80" rx="10"/>
+<text x="695" y="95" text-anchor="middle">Harvest range</text><text x="695" y="115" text-anchor="middle">+ money &amp; labor note</text>
+<path class="arrow" d="M200 55 L300 90" marker-end="url(#a)"/>
+<path class="arrow" d="M200 155 L300 120" marker-end="url(#a)"/>
+<path class="arrow" d="M500 105 L600 105" marker-end="url(#a)"/>
+</svg>
+</section>
+
+<section>
+<h2>The unique kernel</h2>
+<p>The farmer enters what he already knows about his own land, and the app uses his phone's location to pull local weather itself. He gets a yield estimate for <em>his</em> plot, shown as a low-to-high range, not a generic average. It is honest about being a reference-based estimate until real harvest data exists to learn from.</p>
+</section>
+
+<section>
+<h2>Who it's for</h2>
+<p>A friend of yours who leased 10 acres and is growing sugarcane. The seed variety comes from the sugar company he sells to; he knows his soil composition and location. Today he has "no idea how much I will harvest," so he can't plan money and labor with confidence.</p>
+</section>
+
+<section>
+<h2>The core loop &amp; what "working" looks like</h2>
+<p>He opens the app, enters acres, soil values and cane variety, and allows location. Weather appears, and he sees an expected harvest for his land with a range and a planning note. He comes back through the season, and later to compare against his real harvest.</p>
+<div class="mock" aria-label="Sketch of the demo screen">
+<div class="row"><span>Acres</span><b>10</b></div>
+<div class="row"><span>Soil</span><b>from his test</b></div>
+<div class="row"><span>Variety</span><b>from the sugar company</b></div>
+<div class="row"><span>Location</span><b>📍 phone GPS</b></div>
+<div class="out">Expected harvest<br><b>low – high</b><br><small>estimate · plan money &amp; labor</small></div>
+</div>
+<blockquote>You said of this sketch: "matches really nicely what I have in mind."</blockquote>
+</section>
+
+<section>
+<h2>Why this matters to you</h2>
+<p>"I love working by giving back." It grows from your IMTA work, turning farm data into decisions for a community, and points toward AI for social good and a PhD. You want "something useable in future that can be built upon and support more people."</p>
+</section>
+
+<section>
+<h2>Inspiration &amp; identity</h2>
+<p>No references shared yet; practical and phone-friendly. <code>3-prd</code> will fill the look and feel.</p>
+</section>
+
+<section>
+<h2>Proof-of-concept boundary</h2>
+<div class="now"><details open><summary>Now — in the proof of concept</summary>
+<ul><li>One user (your friend), one crop (sugarcane)</li>
+<li>Inputs: acres, soil composition, cane variety, location from phone GPS</li>
+<li>Weather fetched automatically for that location</li>
+<li>Reference-based yield estimate adjusted by those inputs, shown as a range and labeled as an estimate</li>
+<li>A short plain-language planning note for money and labor</li></ul></details></div>
+<div class="later"><details><summary>Later</summary>
+<ul><li>Train a real model on actual harvest data so it improves over time</li>
+<li>Cost per acre from market information, and profit planning</li>
+<li>Leasing companies and early-career farmers as users</li>
+<li>Other crops and regions</li></ul></details></div>
+<div class="cut"><details><summary>Explicitly cut</summary>
+<ul><li><b>Claiming prediction accuracy</b> — no yield data yet to support it</li>
+<li><b>Market price / cost-per-acre</b> — not needed for the harvest-expectation decision; revisit once yield works</li>
+<li><b>Multiple user types and crops</b> — one specific user keeps it testable</li></ul></details></div>
+</section>
+</main>
+</body>
+</html>

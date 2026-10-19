@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shamba Bora — Product Requirements</title>
+<style>
+:root{--bg:#f4efe6;--card:#fbf8f1;--ink:#2b2a22;--muted:#6b6455;--accent:#5a6b2f;--soft:#e8e3d1;--line:#cfc7b0;--warn:#a5651f}
+@media (prefers-color-scheme:dark){:root{--bg:#1b1a14;--card:#25241b;--ink:#ece7d6;--muted:#a79f88;--accent:#a7bd62;--soft:#33311f;--line:#46432c;--warn:#e0a45c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Times New Roman",Times,serif}
+main{max-width:880px;margin:0 auto;padding:24px 16px 64px}
+h1{margin:0 0 4px;font-size:2.1rem}
+.tag{display:inline-block;background:var(--soft);color:var(--accent);padding:2px 12px;font-size:.85rem;font-weight:bold;border:1px solid var(--line)}
+.lead{color:var(--muted)}
+section{background:var(--card);border:1px solid var(--line);padding:18px 20px;margin:18px 0}
+h2{margin:0 0 8px;font-size:1.2rem;color:var(--accent)}
+svg{width:100%;height:auto}
+svg text{fill:var(--ink);font:14px "Times New Roman",serif}
+.box{fill:var(--soft);stroke:var(--accent);stroke-width:1.5}
+.arrow{stroke:var(--accent);stroke-width:2;fill:none}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tabs button{font:inherit;border:1px solid var(--line);background:var(--soft);color:var(--ink);padding:6px 12px;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--accent);color:var(--bg)}
+.panel[hidden]{display:none}
+details{border:1px solid var(--line);padding:8px 12px;margin:8px 0}
+summary{cursor:pointer;font-weight:bold}
+ul{margin:6px 0;padding-left:20px}
+li.ok{list-style:none;margin-left:-20px}
+li.ok::before{content:"☐ ";color:var(--accent)}
+.note{border-left:4px solid var(--warn);padding:6px 12px;background:var(--soft)}
+.swatch{display:inline-block;width:28px;height:18px;border:1px solid var(--line);vertical-align:middle;margin-right:4px}
+.expand{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:600px){.expand{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<h1>Shamba Bora</h1>
+<span class="tag">PRD draft — for your review</span>
+<p class="lead">A phone-friendly app that gives a sugarcane farmer an honest pre-harvest estimate of yield per acre, so he can plan money and labor. Built first for your friend with 10 leased acres.</p>
+
+<section>
+<h2>The core journey</h2>
+<svg viewBox="0 0 860 150" role="img" aria-label="Journey: opening animation, did you know, input form, location and weather, result, optional money">
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5a6b2f"/></marker></defs>
+<rect class="box" x="5" y="40" width="120" height="70"/><text x="65" y="70" text-anchor="middle">1 Cane grows</text><text x="65" y="90" text-anchor="middle">(animation)</text>
+<rect class="box" x="150" y="40" width="120" height="70"/><text x="210" y="70" text-anchor="middle">2 Did you</text><text x="210" y="90" text-anchor="middle">know? pop-up</text>
+<rect class="box" x="295" y="40" width="120" height="70"/><text x="355" y="70" text-anchor="middle">3 Farm</text><text x="355" y="90" text-anchor="middle">details form</text>
+<rect class="box" x="440" y="40" width="120" height="70"/><text x="500" y="70" text-anchor="middle">4 Location</text><text x="500" y="90" text-anchor="middle">+ weather</text>
+<rect class="box" x="585" y="40" width="120" height="70"/><text x="645" y="70" text-anchor="middle">5 Estimate</text><text x="645" y="90" text-anchor="middle">+ planning note</text>
+<rect class="box" x="730" y="40" width="120" height="70" stroke-dasharray="5 4"/><text x="790" y="70" text-anchor="middle">6 Money</text><text x="790" y="90" text-anchor="middle">(optional, last)</text>
+<path class="arrow" d="M125 75 L150 75" marker-end="url(#a)"/><path class="arrow" d="M270 75 L295 75" marker-end="url(#a)"/><path class="arrow" d="M415 75 L440 75" marker-end="url(#a)"/><path class="arrow" d="M560 75 L585 75" marker-end="url(#a)"/><path class="arrow" d="M705 75 L730 75" marker-end="url(#a)"/>
+</svg>
+</section>
+
+<section>
+<h2>From scope to specifics</h2>
+<div class="expand">
+<div><b>Scope said</b><p>"He enters what he knows about his land, and the app uses his phone's location to pull the weather."</p></div>
+<div><b>Now we know</b><p>Eight typed or picked fields (acres, pH, nitrogen, phosphorus, potassium, variety, planting date, location), a manual location fallback, a weather retry, and a "typical conditions" label.</p></div>
+</div>
+</section>
+
+<section>
+<h2>Screens, behavior, and checks</h2>
+<div class="tabs" role="tablist">
+<button role="tab" aria-selected="true" data-p="p1">Opening</button>
+<button role="tab" aria-selected="false" data-p="p2">Farm details</button>
+<button role="tab" aria-selected="false" data-p="p3">Location &amp; weather</button>
+<button role="tab" aria-selected="false" data-p="p4">Result</button>
+<button role="tab" aria-selected="false" data-p="p5">Money</button>
+</div>
+<div class="panel" id="p1"><p>A sugarcane stalk grows to full height in cane green, then a "Did you know?" pop-up shows one fact from a short list <b>you verify against a source you trust</b>. Facts are never generated by the app.</p>
+<ul><li class="ok">The animation plays and ends on the pop-up.</li><li class="ok">The pop-up shows one verified fact and can be closed.</li><li class="ok">Closing it leads to the input screen.</li></ul></div>
+<div class="panel" id="p2" hidden><p>One column, built for a phone. Typed: acres, pH, nitrogen, phosphorus, potassium, cane variety. Date picker: planting date.</p>
+<ul><li class="ok">Every field is present and works with a phone keyboard or date picker.</li></ul>
+<details><summary>If it goes wrong</summary><ul><li><b>Blank field:</b> a gentle nudge to fill it in.</li><li><b>Unlikely number</b> (pH 40, negative acres): "That looks unusual — are you sure?" to confirm or correct.</li><li><b>First use:</b> empty form with short helper text; no result until he runs it.</li></ul></details></div>
+<div class="panel" id="p3" hidden><p>The app asks to use the phone's location and fetches rainfall and temperature for that spot.</p>
+<ul><li class="ok">Allowing location fills it in and the weather appears.</li><li class="ok">Refusing lets him type his location and continue.</li></ul>
+<details><summary>If it goes wrong</summary><ul><li><b>Weather can't be fetched:</b> a plain message and "try again". He can continue, and the result is marked "based on typical conditions, not live weather".</li></ul></details></div>
+<div class="panel" id="p4" hidden><p>Expected <b>tonnes per acre as a low-to-high range</b>, the total for his acres, and a short planning note for money and labor. Always labeled an estimate.</p>
+<ul><li class="ok">Valid inputs give a range per acre and a total for his acres.</li><li class="ok">The result is labeled as an estimate.</li><li class="ok">More acres changes only the total.</li><li class="ok">A planning note appears and refers to the numbers shown.</li></ul></div>
+<div class="panel" id="p5" hidden><p>Optional: new-season price per tonne, last season's price per tonne, last year's spending. Built last, first to drop if time runs short.</p>
+<ul><li class="ok">Leaving it blank does not affect the yield estimate.</li><li class="ok">A new price gives an expected income range.</li><li class="ok">Last season's price gives a comparison.</li></ul></div>
+</section>
+
+<section>
+<h2>Look and feel</h2>
+<p><span class="swatch" style="background:#964B00"></span> Brown <code>#964B00</code> · <span class="swatch" style="background:#008000"></span> Green <code>#008000</code> · <span class="swatch" style="background:#FFFFFF"></span> White <code>#FFFFFF</code></p>
+<p>The app (not this review page) uses only these flat colors, with no tints, shades, or gradients. Brown for text, borders, and buttons; green for the cane animation and main action. Square corners. A prominent serif (Times New Roman style). Modest button sizes. Plain and warm. <i>Codes confirmed.</i></p>
+</section>
+
+<section>
+<h2>Build order and boundary</h2>
+<details open><summary>What we're building (in order)</summary><ol><li>Input screen with friendly checks</li><li>Location (manual fallback) and weather, with its failure state</li><li>Yield estimate, result screen, planning note</li><li>Opening animation and verified-fact pop-up</li><li>Optional money section</li></ol></details>
+<details><summary>Deferred from the POC</summary><ul><li>Reading a soil report from a photo (OCR)</li><li>Saving results, accounts, logins</li><li>Saving actual post-harvest prices</li></ul></details>
+<details><summary>Non-goals</summary><ul><li>Claiming prediction accuracy</li><li>Market price tracking</li><li>Multiple crops or user types</li></ul></details>
+</section>
+
+<section>
+<h2>Open questions</h2>
+<p class="note"><b>Your task before the pop-up is finished:</b> choose three to five sugarcane facts and note the source for each.</p>
+<ul><li><b>Before <code>4-spec</code>:</b> which published yield figures the estimate starts from.</li><li><b>Can wait:</b> English only, or also Swahili.</li><li><b>Decided in <code>4-spec</code>:</b> manual location as place name or coordinates.</li></ul>
+</section>
+</main>
+<script>
+document.querySelectorAll('.tabs button').forEach(function(b){b.addEventListener('click',function(){
+document.querySelectorAll('.tabs button').forEach(function(x){x.setAttribute('aria-selected','false')});
+b.setAttribute('aria-selected','true');
+document.querySelectorAll('.panel').forEach(function(p){p.hidden=true});
+document.getElementById(b.dataset.p).hidden=false;});});
+</script>
+</body>
+</html>
