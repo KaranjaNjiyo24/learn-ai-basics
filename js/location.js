@@ -37,3 +37,31 @@ export async function findPlace(name, fetchFn = fetch) {
 export function describePlace(place) {
   return [place.name, place.region, place.country].filter(Boolean).join(', ');
 }
+
+// Asks the browser for the device's position. The browser shows its own "Allow location?" prompt.
+// Resolves { latitude, longitude }. Rejects with an Error whose .reason is
+// 'denied', 'unavailable', 'timeout', or 'unsupported'.
+export function getBrowserLocation(geo = globalThis.navigator?.geolocation) {
+  return new Promise((resolve, reject) => {
+    const fail = (reason, detail) => {
+      logError('location', `browser location failed: ${reason}`, detail);
+      const error = new Error(`browser location ${reason}`);
+      error.reason = reason;
+      reject(error);
+    };
+    if (!geo) {
+      fail('unsupported');
+      return;
+    }
+    log('location', 'asking the browser for the device location');
+    geo.getCurrentPosition(
+      (position) => {
+        const coords = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+        log('location', 'browser gave coordinates', coords);
+        resolve(coords);
+      },
+      (err) => fail({ 1: 'denied', 2: 'unavailable', 3: 'timeout' }[err.code] ?? 'unavailable', err),
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 },
+    );
+  });
+}

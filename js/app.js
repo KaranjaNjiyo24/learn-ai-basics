@@ -2,7 +2,7 @@
 // read the form -> check it -> find the place -> get the weather -> estimate -> show the result.
 import { validateAll } from './validate.js';
 import { estimate } from './estimate.js';
-import { findPlace, describePlace } from './location.js';
+import { findPlace, describePlace, getBrowserLocation } from './location.js';
 import { getSeasonWeather, typicalSeasonWeather } from './weather.js';
 import { log } from './log.js';
 import { SAMPLE_LABEL } from '../data/reference-data.js';
@@ -12,6 +12,7 @@ const $ = (id) => document.getElementById(id);
 
 let pendingUnusual = null; // values waiting on "Yes it is correct" / "Let me fix it"
 let pendingWeather = null; // values waiting on "Try again" / "Continue with typical conditions"
+let deviceCoords = null; // set when "Use my location" worked; cleared if the place is typed
 
 function readForm() {
   const values = {};
@@ -77,18 +78,22 @@ async function runEstimate(values) {
   $('result').hidden = true;
   setStatus('Finding your farm and checking the weather…');
   let place;
-  try {
-    place = await findPlace(values.place);
-  } catch {
-    offerWeatherFallback(values);
-    return;
+  if (deviceCoords) {
+    place = { ...deviceCoords };
+  } else {
+    try {
+      place = await findPlace(values.place);
+    } catch {
+      offerWeatherFallback(values);
+      return;
+    }
   }
   if (!place) {
     setStatus('');
     $('place-msg').textContent = "We couldn't find that place. Try a nearby town.";
     return;
   }
-  const placeText = describePlace(place);
+  const placeText = deviceCoords ? 'your location' : describePlace(place);
   $('place-msg').textContent = `Using ${placeText}.`;
 
   let weather;
@@ -130,6 +135,29 @@ function handleSubmit(event) {
   }
   runEstimate(values);
 }
+
+const LOCATION_MESSAGES = {
+  denied: 'No problem. Type the nearest town above instead.',
+  unavailable: "We couldn't find your location. Type the nearest town above instead.",
+  timeout: 'Finding your location took too long. Type the nearest town above instead.',
+  unsupported: "This browser can't share its location. Type the nearest town above instead.",
+};
+
+$('use-location').addEventListener('click', async () => {
+  $('place-msg').textContent = '';
+  setStatus('Asking for your location…');
+  try {
+    deviceCoords = await getBrowserLocation();
+    $('place').value = 'My location';
+    $('place-msg').textContent = 'Using your location.';
+  } catch (error) {
+    deviceCoords = null;
+    $('place-msg').textContent = LOCATION_MESSAGES[error.reason] ?? LOCATION_MESSAGES.unavailable;
+    $('place').focus();
+  }
+  setStatus('');
+});
+$('place').addEventListener('input', () => { deviceCoords = null; });
 
 $('farm-form').addEventListener('submit', handleSubmit);
 $('confirm-yes').addEventListener('click', () => {

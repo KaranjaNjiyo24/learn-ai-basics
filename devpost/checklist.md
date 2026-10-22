@@ -29,7 +29,7 @@ Build mode: learn
   Learner check: Type a place you know and a planting date, and see the weather appear and the estimate change. Turn off your internet and see the "try again" message.
   Commit: `Add place lookup, live weather, and weather fallback`
 
-- [ ] **3. "Use my location" asks the browser and fills in the weather**
+- [x] **3. "Use my location" asks the browser and fills in the weather**
   Becomes usable: A button asks the browser for the phone's or computer's location; if allowed, the weather and estimate use it. If refused, the typed place field takes over.
   Why now: It completes the location story from the PRD after the typed path already works, so refusing never leaves him stuck.
   PRD ref: `prd.md > Location and weather`
