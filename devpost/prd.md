@@ -19,7 +19,7 @@ Source: `scope.md > The Unique Kernel`, `scope.md > Who It's For`, `scope.md > T
 Success: he can see, in under a minute, an expected harvest for his own land, clearly marked as an estimate. (`scope.md > What "Working" Looks Like`)
 
 ## Screens and Layout
-Three surfaces, in one flow:
+A navigation bar stays at the top of every screen once the opening animation is done (see **Navigation bar**). Three surfaces, in one flow:
 - **Opening screen.** The sugarcane growth animation, then the "Did you know?" pop-up.
 - **Input screen.** One form, one column, built for a phone. Fields in a clear order: acres; soil (pH, nitrogen, phosphorus, potassium); cane variety; planting date; location. A single button to get the estimate. An optional "money" section (new season price per tonne, last season's price per tonne, last year's spending) sits below, collapsed, and is not needed to get a yield estimate.
 - **Result screen.** The estimate: tonnes per acre as a range, the total for his acres, the planning note, and a clear label that it is an estimate. A way to go back and change inputs.
@@ -34,12 +34,29 @@ Direction from the learner:
 
 ## Features and Behavior
 
+### Navigation bar
+- Added after the build began, at the learner's request: the app should not feel like one long single page, and the farmer should be able to move between its parts from the top. The layout follows the learner's reference image of a plain website header: brand on the left, text links beside it, a thin line under the bar.
+- **Layout (left to right):** the app name "Shamba Bora" as the brand (it also takes him home), then the links **Home**, **Did you know?**, and **My farm**. Nothing else is on the bar.
+  - **Home** shows the opening animation again.
+  - **Did you know?** shows a verified fact, with a way to see another.
+  - **My farm** is the input screen and, below it, the result: the farm details, the optional money section, and the estimate.
+- The opening flow is unchanged: animation, then the "Did you know?" fact, then **My farm**. The bar is how he moves around after that, or back to an earlier part.
+- The link for the part he is on looks marked (bold with a green underline). The bar is a single row that fits a phone screen; if the three links do not fit, they stay in one row and shrink rather than hiding in a menu.
+- **Look:** flat and plain, in the colors already agreed. White bar, brown text, a green underline for the current link, and a thin solid brown line under the bar instead of a shadow. Same Times New Roman style serif, square corners, no gradients, no extra colors. Only the arrangement is taken from the reference image, not its colors or fonts.
+- **Not on the bar:** the reference image also shows a search icon, a notification bell, an account picture, and drop-down arrows. None of these are included: the app has no search, no notifications, and no accounts or logins (see **Deferred From the POC**), and each link goes straight to one place, so there are no drop-downs.
+  - [ ] The bar shows on the input and result screens, with the brand and the three links.
+  - [ ] Tapping each link shows the matching part, and the current one is marked.
+  - [ ] Moving between links does not erase what he has typed or the result he has already seen.
+  - [ ] The bar fits a phone screen in one row and uses only the agreed colors and font.
+
 ### Opening animation and "Did you know?"
 - A sugarcane stalk grows to full height in cane green, then a pop-up shows one fact and a close button.
 - Facts come from a short fixed list of three to five that the learner has verified against a source they trust (for example, the Kenya Sugar Board or a sugar company publication). The app never generates facts. One is shown at random. Each fact is stored with its source.
   - [ ] The animation plays on opening and ends on the pop-up.
   - [ ] The pop-up shows one fact from the verified list and can be closed.
   - [ ] Closing it leads to the input screen.
+- The cane drawing is several jointed green stalks with long arching leaves, sized to fit comfortably on a phone and a desktop screen. It never fills more than about half the screen's height.
+  - [ ] The animation shows recognizable sugarcane (stalks with joints and leaves), flat `#008000` on white, and does not make the page scroll.
 
 ### Farm details
 - Typed fields: acres, pH, nitrogen, phosphorus, potassium, cane variety (typed text), and a date picker for "When did you plant?"
@@ -86,6 +103,7 @@ Direction from the learner:
 - **Manual location fallback** — the learner's choice when location is denied.
 - **Friendly "are you sure?" check** — the learner wanted a notification, not an error.
 - **Money section included, built after the yield estimate works** — the learner said it can be part of the proof of concept at a later stage, once yield works.
+- **Navigation bar with three links (Home, Did you know?, My farm)** — requested by the learner so the app is not a single long page. The three links follow the learner's own order of the journey (animation, "Did you know?", then the farm details); the learner should confirm them. Search, bell, account picture, and drop-downs from the reference image were left out because the app has no such features.
 - **Curated, verified facts only** — the learner wants accurate facts only; a fixed verified list is how that is guaranteed.
 - **Plain, earthy, flat exact colors (brown and green, no shades), serif, square corners** — the learner's look; they rejected the softer tinted palette as too generic for the build.
 
@@ -101,6 +119,7 @@ In build order (the money section last, and first to drop if time runs short):
 3. Yield estimate and result screen with the planning note.
 4. Opening animation and "Did you know?" pop-up with verified facts.
 5. Optional money section with expected income and comparison.
+6. Navigation bar to move between Home, Did you know?, and My farm (added during the build).
 
 ## Deferred From the POC
 - Reading a soil report from a photo (OCR): a separate technical project.

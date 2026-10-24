@@ -69,6 +69,16 @@ Build mode: learn
   Learner check: Enter a price per tonne and last season's price, and check the income and comparison make sense to you.
   Commit: `Add optional income and price comparison`
 
+- [ ] **7. A navigation bar moves between Home, Did you know?, and My farm**
+  Becomes usable: A plain top bar with the brand and three links. Opening the app still plays the animation and fact, then lands on My farm; the bar then lets him go back to Home (animation again), see another verified fact on Did you know?, or return to My farm without losing what he typed or his result.
+  Why now: The learner asked for it after seeing the finished app; it is a presentation change on top of the working estimate, so it comes after every feature slice and cannot break the kernel.
+  PRD ref: `prd.md > Navigation bar`, `prd.md > Screens and Layout`, `prd.md > Look and Feel`
+  Spec ref: `spec.md > Components > Navigation bar (added during the build)`, `spec.md > Components > Opening animation and fact pop-up`, `spec.md > Look and Feel`
+  Build: Turn the intro overlay into a Home view; add the Did you know? and My farm views in `index.html`; add `nav.js` with hash-based view switching and the current-link marking; style the bar in `styles.css` using only the agreed colors, serif, and square corners; keep the cane size cap.
+  Verify (mechanical): Load the page with a local server and confirm all files return 200; in Node, test the view-switching function with a stubbed `document` (each link shows only its view and marks itself current; an unknown hash falls back to Home); confirm the form values and result element still exist after switching; grep the CSS for any color other than the three agreed ones.
+  Learner check: Open the app fresh. Watch the animation and fact, continue to My farm, run an estimate, tap Did you know?, tap Show another fact, then tap My farm and see that your entries and result are still there. Check the bar looks like the header you showed.
+  Commit: `Add navigation bar between Home, Did you know, and My farm`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 2, when the estimate responds to real weather
@@ -96,3 +106,5 @@ Activity mode: not started
 - Rainfall is compared with what the crop needs for its age so far, not a whole season — the build found that comparing rain since planting with a full season's need would wrongly mark every young crop as "too dry". The estimate now takes the crop's age in days along with the weather.
 - A second free service (BigDataCloud reverse geocoding) now turns the device's coordinates into a readable place name, shown with the coordinates — the learner, after trying "Use my location" and seeing only "your location", chose this over showing coordinates alone. If the name lookup fails the coordinates still work. Typed place name to coordinates is unchanged. `spec.md` updated to match.
 - The "Did you know?" list has 15 facts instead of the 3 to 5 the PRD planned, all supplied and confirmed by the learner. The COMESA import-quota fact was left out because Kenya's COMESA sugar safeguard ended in November 2025. Most facts carry "Confirmed by the learner (link to be added)" as their source, so real links must be added before public sharing.
+- Added a navigation bar (slice 7) at the learner's request after seeing the finished app: the learner wanted the app not to feel like one long single page, with Home, Did you know?, and My farm links in a plain header like their reference image (colors and font unchanged; search, bell, account picture, and drop-downs left out because the app has none of those features). The first cane drawing also rendered as a huge black shape, so it was redrawn with jointed stalks and given a fixed size. `prd.md` and `spec.md` updated to match.
+- Slice 6 (money) was committed on the learner's instruction to continue; the money fields show Ksh at the learner's request.

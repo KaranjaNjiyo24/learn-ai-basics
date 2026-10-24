@@ -55,7 +55,12 @@ Carried from `prd.md > Look and Feel`; no new questions.
 
 ### Opening animation and fact pop-up
 `intro.js` plays the CSS/SVG growth animation, then shows one fact from `data/facts.js` and a close button. Facts are only those the learner has verified.
+The cane is inline SVG with explicit `width`/`height` and fill, plus a CSS size cap, so it cannot grow to fill the page even if the stylesheet fails to apply. Once the navigation bar exists, the opening is the Home view rather than a full-screen overlay, and its close button goes to My farm.
 PRD ref: `prd.md > Opening animation and "Did you know?"`.
+
+### Navigation bar (added during the build)
+`nav.js` and one `<nav>` in `index.html`. The page stays a single HTML file with three views (Home, Did you know?, My farm) and the nav shows one at a time by toggling the `hidden` attribute, so nothing he typed or any result is thrown away when he switches. The address hash (`#home`, `#did-you-know`, `#my-farm`) records the current view so the browser's back button works. The bar is hidden during the first opening animation and appears when the first fact is shown; after that it is always visible. The brand "Shamba Bora" links to `#home`. Home replays the animation and the fact; Did you know? shows a fact with a "Show another fact" button (reusing `pickFact` from `intro.js`); My farm holds the form and result. The current link is marked with bold text and a green underline. Look: white bar, brown text, a 2px solid brown line below, no shadow, same serif, square corners, a single row that shrinks on a phone.
+PRD ref: `prd.md > Navigation bar`.
 
 ### Farm details form and checks
 `index.html` holds the form. `validate.js` returns, per field, "ok", "missing", or "unusual" (outside a plausible range defined in `data/reference-data.js`). Unusual shows "That looks unusual — are you sure?" with confirm or fix.
@@ -103,6 +108,7 @@ shamba-bora/            (project root)
 ├── js/
 │   ├── app.js          # connects the steps in order
 │   ├── intro.js        # animation and fact pop-up
+│   ├── nav.js          # top bar: Home / Did you know? / My farm (added in the build)
 │   ├── validate.js     # blank / unusual checks
 │   ├── location.js     # browser location + typed-place fallback
 │   ├── weather.js      # Open-Meteo request and totals
