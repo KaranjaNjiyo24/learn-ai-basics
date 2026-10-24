@@ -1,4 +1,5 @@
 // Home view: the cane-growth animation plays, then one fact (picked at random) appears with a button.
+// Only the fact text is shown on screen; each fact's source stays recorded in data/facts.js.
 // Also picks the fact for the "Did you know?" view.
 import { facts } from '../data/facts.js';
 import { log } from './log.js';
@@ -22,7 +23,6 @@ export function playHome(onFactShown = () => {}) {
 
   const fact = pickFact();
   document.getElementById('intro-text').textContent = fact.text;
-  document.getElementById('intro-source').textContent = `Source: ${fact.source}`;
 
   home.classList.remove('playing');
   void home.offsetWidth; // forces the browser to restart the CSS animation
@@ -40,6 +40,5 @@ let current = null;
 export function showFact(another = false) {
   current = pickFact(facts, Math.random, another ? current : null);
   document.getElementById('dyk-text').textContent = current.text;
-  document.getElementById('dyk-source').textContent = `Source: ${current.source}`;
   log('facts', 'showing fact', current.text);
 }

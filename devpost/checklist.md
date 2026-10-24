@@ -82,7 +82,7 @@ Build mode: learn
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 2, when the estimate responds to real weather
-- [ ] Final kick-the-tires exploration and feedback completed
+- [x] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
 
@@ -108,3 +108,4 @@ Activity mode: not started
 - The "Did you know?" list has 15 facts instead of the 3 to 5 the PRD planned, all supplied and confirmed by the learner. The COMESA import-quota fact was left out because Kenya's COMESA sugar safeguard ended in November 2025. Most facts carry "Confirmed by the learner (link to be added)" as their source, so real links must be added before public sharing.
 - Added a navigation bar (slice 7) at the learner's request after seeing the finished app: the learner wanted the app not to feel like one long single page, with Home, Did you know?, and My farm links in a plain header like their reference image (colors and font unchanged; search, bell, account picture, and drop-downs left out because the app has none of those features). The first cane drawing also rendered as a huge black shape, so it was redrawn with jointed stalks and given a fixed size. `prd.md` and `spec.md` updated to match.
 - Slice 6 (money) was committed on the learner's instruction to continue; the money fields show Ksh at the learner's request.
+- The learner asked for the "Did you know?" screens to show only the fact text, without the source line (which mostly read "Confirmed by the learner"). Sources are still stored with every fact in `data/facts.js`; they are just not displayed. `prd.md` already says each fact is stored with its source, so no PRD change was needed.
