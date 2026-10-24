@@ -63,6 +63,7 @@ PRD ref: `prd.md > Farm details`, `prd.md > States and Boundaries`.
 
 ### Location
 `location.js` asks the browser for coordinates; on refusal or failure it offers a typed place name and looks it up with Open-Meteo geocoding. **This is my recommendation for the PRD's open question, awaiting your agreement:** place name, because it is easier for a farmer than coordinates.
+After the browser gives coordinates, `reverseGeocode` asks BigDataCloud for a readable name (for example "Kisumu, Kenya") and the form shows the name together with the coordinates. If that lookup fails, the coordinates alone are shown and used, so the farmer is never blocked. The typed place name to coordinates path is unchanged.
 PRD ref: `prd.md > Location and weather`.
 
 ### Weather
@@ -121,10 +122,12 @@ All unverified in this session; verify at the start of the build.
 - **Open-Meteo weather (past/current):** request with latitude, longitude, start date, end date, daily rainfall and temperature; reply is JSON with daily arrays. No key. Check free-use terms, data delay for recent days, and how to cover a planting date months ago.
 - **Open-Meteo geocoding:** request with a place name; reply lists matches with latitude and longitude. No key.
 - **Browser Geolocation API:** built in; asks the user; works on `localhost`.
+- **BigDataCloud browser-side reverse geocoding (added in the build, learner-approved):** request `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=..&longitude=..&localityLanguage=en`; reply includes `locality`, `city`, `principalSubdivision`, `countryName`. No key. Docs: https://www.bigdatacloud.com/free-api/free-reverse-geocode-to-city-api. **Free-use terms not verified; the learner should read them before public sharing.**
 
 ## Important Failure Modes
 - **Location refused or unavailable** → he types a place name and continues.
 - **Place name not found** → "We couldn't find that place — try a nearby town."
+- **Name for the device location can't be fetched** → coordinates alone are shown and used.
 - **Weather request fails (no signal, service down)** → friendly message, "try again", and an optional continue with "typical conditions"; range widened; logged to the console.
 - **Odd or blank inputs** → the "are you sure?" or "please fill this in" messages; never silently accepted or crashed on.
 

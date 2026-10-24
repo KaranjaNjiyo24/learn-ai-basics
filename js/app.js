@@ -2,13 +2,17 @@
 // read the form -> check it -> find the place -> get the weather -> estimate -> show the result.
 import { validateAll } from './validate.js';
 import { estimate } from './estimate.js';
-import { findPlace, describePlace, getBrowserLocation } from './location.js';
+import { findPlace, describePlace, getBrowserLocation, reverseGeocode } from './location.js';
 import { getSeasonWeather, typicalSeasonWeather } from './weather.js';
 import { log } from './log.js';
 import { SAMPLE_LABEL } from '../data/reference-data.js';
 
 const FIELDS = ['acres', 'variety', 'plantingDate', 'place', 'ph', 'n', 'p', 'k'];
 const $ = (id) => document.getElementById(id);
+
+const coordsText = (c) => `${c.latitude.toFixed(3)}, ${c.longitude.toFixed(3)}`;
+// "Kisumu, Kenya (-0.102, 34.762)" when we have a name, otherwise "your location (-0.102, 34.762)".
+const locationText = (c) => `${c.label || 'your location'} (${coordsText(c)})`;
 
 let pendingUnusual = null; // values waiting on "Yes it is correct" / "Let me fix it"
 let pendingWeather = null; // values waiting on "Try again" / "Continue with typical conditions"
@@ -93,7 +97,7 @@ async function runEstimate(values) {
     $('place-msg').textContent = "We couldn't find that place. Try a nearby town.";
     return;
   }
-  const placeText = deviceCoords ? 'your location' : describePlace(place);
+  const placeText = deviceCoords ? locationText(deviceCoords) : describePlace(place);
   $('place-msg').textContent = `Using ${placeText}.`;
 
   let weather;
@@ -148,8 +152,13 @@ $('use-location').addEventListener('click', async () => {
   setStatus('Asking for your location…');
   try {
     deviceCoords = await getBrowserLocation();
-    $('place').value = 'My location';
-    $('place-msg').textContent = 'Using your location.';
+    try {
+      deviceCoords.label = await reverseGeocode(deviceCoords); // a name, or null if none
+    } catch {
+      deviceCoords.label = null; // no name is fine: the coordinates still work
+    }
+    $('place').value = deviceCoords.label ? locationText(deviceCoords) : `My location (${coordsText(deviceCoords)})`;
+    $('place-msg').textContent = `Using ${locationText(deviceCoords)}.`;
   } catch (error) {
     deviceCoords = null;
     $('place-msg').textContent = LOCATION_MESSAGES[error.reason] ?? LOCATION_MESSAGES.unavailable;

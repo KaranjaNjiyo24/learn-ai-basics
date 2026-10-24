@@ -65,3 +65,26 @@ export function getBrowserLocation(geo = globalThis.navigator?.geolocation) {
     );
   });
 }
+
+// Turns coordinates into a readable place name ("Kisumu, Kenya") using BigDataCloud's
+// browser-side reverse geocoding. Returns null if it has no name for that spot.
+// Throws if the request fails. Docs: https://www.bigdatacloud.com/free-api/free-reverse-geocode-to-city-api
+const REVERSE_URL = 'https://api.bigdatacloud.net/data/reverse-geocode-client';
+
+export async function reverseGeocode({ latitude, longitude }, fetchFn = fetch) {
+  const url = `${REVERSE_URL}?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
+  log('location', 'looking up a name for the coordinates');
+  let data;
+  try {
+    const response = await fetchFn(url);
+    if (!response.ok) throw new Error(`reverse geocoding service replied ${response.status}`);
+    data = await response.json();
+  } catch (error) {
+    logError('location', 'reverse lookup failed', error);
+    throw error;
+  }
+  const parts = [data.locality || data.city, data.principalSubdivision, data.countryName].filter(Boolean);
+  const name = [...new Set(parts)].join(', ');
+  log('location', name ? 'coordinates are in' : 'no name for these coordinates', name);
+  return name || null;
+}
