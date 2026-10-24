@@ -59,7 +59,7 @@ Build mode: learn
   Learner check: Open the app fresh. Watch the animation, read the fact, close it, and say whether the opening feels the way you pictured.
   Commit: `Add sugarcane intro animation and verified fact pop-up`
 
-- [ ] **6. Optional money section shows expected income**
+- [x] **6. Optional money section shows expected income**
   Becomes usable: With a new-season price (and optionally last season's price and last year's spending), the result also shows expected income as a range and the price comparison.
   Why now: The PRD put it last and first to drop; the yield estimate must be working and approved first.
   PRD ref: `prd.md > Money (optional, built last)`

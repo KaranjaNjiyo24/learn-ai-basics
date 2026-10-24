@@ -3,6 +3,7 @@
 import { validateAll } from './validate.js';
 import { estimate } from './estimate.js';
 import { buildNote } from './note.js';
+import { money } from './money.js';
 import { playIntro } from './intro.js';
 import { findPlace, describePlace, getBrowserLocation, reverseGeocode } from './location.js';
 import { getSeasonWeather, typicalSeasonWeather } from './weather.js';
@@ -10,6 +11,7 @@ import { log } from './log.js';
 import { SAMPLE_LABEL } from '../data/reference-data.js';
 
 const FIELDS = ['acres', 'variety', 'plantingDate', 'place', 'ph', 'n', 'p', 'k'];
+const MONEY_FIELDS = ['newPrice', 'lastPrice', 'lastSpending'];
 const $ = (id) => document.getElementById(id);
 
 const coordsText = (c) => `${c.latitude.toFixed(3)}, ${c.longitude.toFixed(3)}`;
@@ -43,6 +45,21 @@ function setStatus(text) {
   $('status').textContent = text;
 }
 
+// Fills the optional income lines under the note; blank money fields leave the result untouched.
+function showMoney(r) {
+  const inputs = {};
+  MONEY_FIELDS.forEach((f) => { inputs[f] = $(f).value; });
+  const { problems, lines } = money(inputs, r);
+  MONEY_FIELDS.forEach((f) => {
+    $(`${f}-msg`).textContent = problems.includes(f) ? 'Please type a number above zero, or leave this blank.' : '';
+  });
+  $('result-money').replaceChildren(...lines.map((text) => {
+    const p = document.createElement('p');
+    p.textContent = text;
+    return p;
+  }));
+}
+
 function showResult(values, weather, placeText) {
   const r = estimate(values, weather);
 
@@ -50,6 +67,7 @@ function showResult(values, weather, placeText) {
   $('result-total').textContent =
     `For your ${values.acres} acres: about ${r.lowTotal} to ${r.highTotal} tonnes in total.`;
   $('result-note').textContent = buildNote(r, values.acres);
+  showMoney(r);
   $('result-label').textContent = r.isLive
     ? `This is an estimate based on ${SAMPLE_LABEL}, adjusted for the real weather near ${placeText} since you planted.`
     : `This is an estimate based on ${SAMPLE_LABEL}, and on typical conditions, not live weather, so the range is wider.`;

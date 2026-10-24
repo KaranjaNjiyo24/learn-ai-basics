@@ -77,6 +77,7 @@ td:last-child { text-align: right; }
 #intro svg { width: 160px; height: 260px; flex: none; }
 #cane { fill: var(--green); transform-origin: 60px 190px; animation: grow 3.2s ease-out forwards; }
 .node { fill: var(--white); }
+#intro svg { max-width: 60vw; max-height: 45vh; }
 .leaf { transform-origin: 60px 26px; animation: unfurl 3.2s ease-out forwards; }
 @keyframes grow { from { transform: scaleY(0.05); } to { transform: scaleY(1); } }
 @keyframes unfurl { 0%, 60% { opacity: 0; } 100% { opacity: 1; } }
