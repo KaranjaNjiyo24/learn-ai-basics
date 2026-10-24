@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shamba Bora App Map</title>
+<style>
+  :root { --brown: #964B00; --green: #008000; --white: #FFFFFF; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--white); color: var(--brown); font: 18px/1.5 "Times New Roman", Times, serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 2rem; margin: 8px 0; }
+  h2 { font-size: 1.3rem; margin: 28px 0 8px; border-bottom: 2px solid var(--brown); }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 0.9em; }
+  .stop { border: 2px solid var(--green); padding: 8px 12px; margin: 10px 0; }
+  .stop h3 { margin: 0 0 4px; color: var(--green); font-size: 1.05rem; }
+  summary { cursor: pointer; font-weight: bold; }
+  summary:focus, a:focus { outline: 3px solid var(--green); }
+  svg { width: 100%; height: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  td { border-bottom: 1px solid var(--brown); padding: 6px 4px; vertical-align: top; }
+  .note { font-style: italic; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Shamba Bora: app map</h1>
+  <p>A short guide to where things live in the app, so you know where to start when you want to change something.</p>
+
+  <h2>What the app is</h2>
+  <p>Shamba Bora gives a sugarcane farmer a low-to-high estimate of tonnes per acre for his own land, then optionally what that harvest could earn in Ksh. It runs entirely in the browser: there is no server of our own and nothing is saved between visits. The only outside pieces are the weather and place-name services.</p>
+  <p>Main pieces: the page (<code>index.html</code>, with three views Home, Did you know?, My farm), the coordinating file (<code>js/app.js</code>), the calculations (<code>js/estimate.js</code>, <code>js/money.js</code>, <code>js/note.js</code>), the outside lookups (<code>js/location.js</code>, <code>js/weather.js</code>), and the sample data (<code>data/reference-data.js</code>, <code>data/facts.js</code>).</p>
+
+  <h2>One action, followed through</h2>
+  <p>The action: he taps <b>Show my estimate</b> with a new price entered.</p>
+  <svg viewBox="0 0 700 150" role="img" aria-label="Diagram: tap the button, then app.js checks the form, fetches the weather, calls estimate.js, then money.js, and the result appears on screen.">
+    <g fill="#FFFFFF" stroke="#964B00" stroke-width="2" font-family="Times New Roman, serif" font-size="14" fill-opacity="1">
+      <rect x="4" y="50" width="100" height="50"/>
+      <rect x="124" y="50" width="110" height="50"/>
+      <rect x="254" y="10" width="130" height="40"/>
+      <rect x="254" y="100" width="130" height="40"/>
+      <rect x="404" y="100" width="120" height="40"/>
+      <rect x="544" y="50" width="150" height="50"/>
+    </g>
+    <g fill="#964B00" font-family="Times New Roman, serif" font-size="14" text-anchor="middle">
+      <text x="54" y="72">Tap "Show my</text><text x="54" y="90">estimate"</text>
+      <text x="179" y="72">app.js</text><text x="179" y="90">handleSubmit</text>
+      <text x="319" y="35">weather.js (outside)</text>
+      <text x="319" y="125">estimate.js</text>
+      <text x="464" y="125">money.js</text>
+      <text x="619" y="72">Range and income</text><text x="619" y="90">on the screen</text>
+    </g>
+    <g stroke="#008000" stroke-width="2" fill="none">
+      <path d="M104 75 H124"/><path d="M234 65 L254 32"/><path d="M234 85 L254 118"/>
+      <path d="M384 120 H404"/><path d="M524 120 L544 90"/><path d="M384 30 L544 62"/>
+    </g>
+  </svg>
+
+  <h2>A 3-stop route (reference route)</h2>
+  <p class="note">This is a reference route to reuse. Search for the names, since line numbers drift as the code changes.</p>
+  <div class="stop"><h3>Stop 1: where the tap lands</h3>
+    <p><code>js/app.js</code>, search <code>function handleSubmit</code>. It reads the fields, checks them with <code>validateAll</code>, asks "are you sure?" for unusual values, then calls <code>runEstimate</code>, which fetches the weather and calls <code>showResult</code>. It coordinates; it does no maths.</p></div>
+  <div class="stop"><h3>Stop 2: where the maths happens</h3>
+    <p><code>js/estimate.js</code>, search <code>export function estimate</code>. It picks a baseline range for the variety, works out one factor each for pH, N, P, K and rainfall, multiplies them into <code>combined</code>, and applies that to the range. The numbers it uses are in <code>data/reference-data.js</code> and are labeled sample data.</p></div>
+  <div class="stop"><h3>Stop 3: where the income comes from</h3>
+    <p><code>js/money.js</code>, search <code>export function money</code>. It multiplies the tonnes range by the new price and compares it with last season's price and spending. <code>showMoney</code> in <code>js/app.js</code> puts its sentences on the screen. Blank money fields add nothing.</p></div>
+
+  <h2>To change this, start here</h2>
+  <table>
+    <tr><td>The wording of the income lines</td><td><code>js/money.js</code>, search <code>Expected income</code></td></tr>
+    <tr><td>How pH, nutrients or rainfall move the estimate</td><td><code>data/reference-data.js</code> (the bands), then <code>js/estimate.js</code></td></tr>
+    <tr><td>The "Did you know?" facts</td><td><code>data/facts.js</code></td></tr>
+    <tr><td>The planning note under the estimate</td><td><code>js/note.js</code>, search <code>buildNote</code></td></tr>
+    <tr><td>The top bar and the three views</td><td><code>js/nav.js</code> (<code>showView</code>), <code>index.html</code> (<code>nav</code>), <code>css/styles.css</code></td></tr>
+    <tr><td>The sugarcane animation</td><td><code>index.html</code> (the <code>svg</code> in <code>view-home</code>), <code>css/styles.css</code> (<code>@keyframes grow</code>)</td></tr>
+    <tr><td>Colors and fonts</td><td><code>css/styles.css</code>, the three variables at the top</td></tr>
+  </table>
+
+  <h2>A practice to reuse</h2>
+  <details open>
+    <summary>Write what "working" looks like, then run known numbers to check it</summary>
+    <p>The PRD states observable results for money: <code>devpost/prd.md</code>, under "Money (optional, built last)", says blank money fields must not affect the yield estimate and that a new price must produce an income range. While building <code>js/money.js</code>, running it in Node with a bad price (a negative number and plain text) printed "NaN" in the income sentences. That was caught by running known inputs before anyone saw the page, and it was fixed first. Because each result was written down as something you could observe, the problem was easy to spot.</p>
+    <p>Next time, with any agent: ask for each feature's expected result in plain words and one concrete example input, then run that example yourself before moving on.</p>
+  </details>
+
+  <h2>Run it again</h2>
+  <p>From the project folder, run <code>python3 -m http.server 8000</code>, then open <code>http://localhost:8000</code>. Location and the JavaScript modules need a web server, so opening <code>index.html</code> directly will not work.</p>
+  <p class="note">This map is a snapshot of the code at commit <code>c3858ea</code> and can drift as the code changes.</p>
+</main>
+</body>
+</html>

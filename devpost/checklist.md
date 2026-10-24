@@ -86,19 +86,19 @@ Build mode: learn
 
 ## Final Review
 
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- [x] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
+- [x] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
+- [x] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
+- [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
-Activity and evidence: not started
-Route and stops: not started
-Edit outcome: not started
-Reflection: not started
-Activity mode: not started
+Activity and evidence: guided route (learner is new to planning). Followed one action, tapping Show my estimate with a new price entered, through three stops: `js/app.js` handleSubmit, `js/estimate.js` estimate, `js/money.js` money. Learner reported the route looked right and had no questions.
+Route and stops: all three stops covered above.
+Edit outcome: offered (the "Expected income:" sentence in `js/money.js`); no wording was chosen and no change was made, so none was committed. Treated as declined.
+Reflection: offered (optional question about what to do differently next time with an agent); any answer belongs in the ignored learner profile.
+Activity mode: guided route. App map: `devpost/app-map.html`, snapshot of commit c3858ea.
 
 ## Revisions
 
