@@ -49,7 +49,7 @@ Build mode: learn
   Learner check: Run an estimate and read the note. Say whether it is useful to your friend, and what you would change in the wording.
   Commit: `Add planning note to result`
 
-- [ ] **5. The app opens with the sugarcane animation and a verified fact**
+- [x] **5. The app opens with the sugarcane animation and a verified fact**
   Becomes usable: Opening the page plays the cane-growth animation, shows one verified "Did you know?" fact, and then leads to the form.
   Why now: It is the finishing identity of the app. It also needs your verified facts, so it comes late enough for you to prepare them.
   PRD ref: `prd.md > Opening animation and "Did you know?"`, `prd.md > Look and Feel`
@@ -95,3 +95,4 @@ Activity mode: not started
 - Impossible values (a pH of 40, zero or negative acres) now ask the farmer to correct them instead of offering "are you sure?" — the build found that an estimate calculated from an impossible number would be meaningless. Merely unusual values (a pH of 3, 800 acres) still get the friendly "are you sure?" with confirm or fix, as the PRD describes.
 - Rainfall is compared with what the crop needs for its age so far, not a whole season — the build found that comparing rain since planting with a full season's need would wrongly mark every young crop as "too dry". The estimate now takes the crop's age in days along with the weather.
 - A second free service (BigDataCloud reverse geocoding) now turns the device's coordinates into a readable place name, shown with the coordinates — the learner, after trying "Use my location" and seeing only "your location", chose this over showing coordinates alone. If the name lookup fails the coordinates still work. Typed place name to coordinates is unchanged. `spec.md` updated to match.
+- The "Did you know?" list has 15 facts instead of the 3 to 5 the PRD planned, all supplied and confirmed by the learner. The COMESA import-quota fact was left out because Kenya's COMESA sugar safeguard ended in November 2025. Most facts carry "Confirmed by the learner (link to be added)" as their source, so real links must be added before public sharing.

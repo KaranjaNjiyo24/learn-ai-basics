@@ -3,6 +3,7 @@
 import { validateAll } from './validate.js';
 import { estimate } from './estimate.js';
 import { buildNote } from './note.js';
+import { playIntro } from './intro.js';
 import { findPlace, describePlace, getBrowserLocation, reverseGeocode } from './location.js';
 import { getSeasonWeather, typicalSeasonWeather } from './weather.js';
 import { log } from './log.js';
@@ -188,4 +189,5 @@ $('weather-continue').addEventListener('click', () => {
   if (values) showResult(values, typicalSeasonWeather(values.plantingDate), values.place);
 });
 
+playIntro();
 log('app', 'loaded');
