@@ -7,40 +7,57 @@
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<div id="intro" hidden>
-  <svg viewBox="0 0 120 200" width="160" height="260" role="img" aria-label="Sugarcane stalks growing from shoots to full height">
-    <g id="cane" fill="#008000">
-      <!-- three stalks of different heights, each with white joints -->
-      <rect x="36" y="70" width="9" height="120"/>
-      <rect x="56" y="30" width="9" height="160"/>
-      <rect x="76" y="55" width="9" height="135"/>
-      <g fill="#FFFFFF">
-        <rect class="node" x="36" y="100" width="9" height="2"/>
-        <rect class="node" x="36" y="135" width="9" height="2"/>
-        <rect class="node" x="36" y="165" width="9" height="2"/>
-        <rect class="node" x="56" y="60" width="9" height="2"/>
-        <rect class="node" x="56" y="95" width="9" height="2"/>
-        <rect class="node" x="56" y="130" width="9" height="2"/>
-        <rect class="node" x="56" y="165" width="9" height="2"/>
-        <rect class="node" x="76" y="85" width="9" height="2"/>
-        <rect class="node" x="76" y="120" width="9" height="2"/>
-        <rect class="node" x="76" y="155" width="9" height="2"/>
-      </g>
-      <!-- long arching leaf blades -->
-      <path class="leaf" d="M60 30 Q40 6 6 22 Q38 16 58 38 Z"/>
-      <path class="leaf" d="M62 30 Q82 6 114 22 Q84 16 64 38 Z"/>
-      <path class="leaf" d="M40 70 Q22 50 2 66 Q24 58 38 78 Z"/>
-      <path class="leaf" d="M81 55 Q98 35 118 50 Q96 44 83 63 Z"/>
-    </g>
-  </svg>
-  <div id="intro-fact" hidden>
-    <h2>Did you know?</h2>
-    <p id="intro-text"></p>
-    <p class="label" id="intro-source"></p>
-    <button type="button" id="intro-close">Continue to my farm</button>
+<nav id="nav" aria-label="Main" hidden>
+  <div class="nav-inner">
+    <a class="brand" href="#home">Shamba Bora</a>
+    <a class="nav-link" href="#home" data-view="home">Home</a>
+    <a class="nav-link" href="#did-you-know" data-view="did-you-know">Did you know?</a>
+    <a class="nav-link" href="#my-farm" data-view="my-farm">My farm</a>
   </div>
-</div>
+</nav>
 <main>
+  <section id="view-home" class="view" hidden>
+    <svg viewBox="0 0 120 200" width="160" height="260" role="img" aria-label="Sugarcane stalks growing from shoots to full height">
+      <g id="cane" fill="#008000">
+        <!-- three stalks of different heights, each with white joints -->
+        <rect x="36" y="70" width="9" height="120"/>
+        <rect x="56" y="30" width="9" height="160"/>
+        <rect x="76" y="55" width="9" height="135"/>
+        <g fill="#FFFFFF">
+          <rect class="node" x="36" y="100" width="9" height="2"/>
+          <rect class="node" x="36" y="135" width="9" height="2"/>
+          <rect class="node" x="36" y="165" width="9" height="2"/>
+          <rect class="node" x="56" y="60" width="9" height="2"/>
+          <rect class="node" x="56" y="95" width="9" height="2"/>
+          <rect class="node" x="56" y="130" width="9" height="2"/>
+          <rect class="node" x="56" y="165" width="9" height="2"/>
+          <rect class="node" x="76" y="85" width="9" height="2"/>
+          <rect class="node" x="76" y="120" width="9" height="2"/>
+          <rect class="node" x="76" y="155" width="9" height="2"/>
+        </g>
+        <!-- long arching leaf blades -->
+        <path class="leaf" d="M60 30 Q40 6 6 22 Q38 16 58 38 Z"/>
+        <path class="leaf" d="M62 30 Q82 6 114 22 Q84 16 64 38 Z"/>
+        <path class="leaf" d="M40 70 Q22 50 2 66 Q24 58 38 78 Z"/>
+        <path class="leaf" d="M81 55 Q98 35 118 50 Q96 44 83 63 Z"/>
+      </g>
+    </svg>
+    <div id="intro-fact" hidden>
+      <h2>Did you know?</h2>
+      <p id="intro-text"></p>
+      <p class="label" id="intro-source"></p>
+      <button type="button" id="intro-close">Continue to my farm</button>
+    </div>
+  </section>
+
+  <section id="view-did-you-know" class="view" hidden>
+    <h2>Did you know?</h2>
+    <p id="dyk-text"></p>
+    <p class="label" id="dyk-source"></p>
+    <button type="button" id="dyk-another">Show another fact</button>
+  </section>
+
+  <section id="view-my-farm" class="view" hidden>
   <header>
     <h1>Shamba Bora</h1>
     <p>Know what to expect from your sugarcane before harvest.</p>
@@ -128,6 +145,7 @@
       <summary>How this was worked out</summary>
       <div id="result-detail"></div>
     </details>
+  </section>
   </section>
 </main>
 <script type="module" src="js/app.js"></script>

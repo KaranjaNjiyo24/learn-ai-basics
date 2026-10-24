@@ -69,7 +69,7 @@ Build mode: learn
   Learner check: Enter a price per tonne and last season's price, and check the income and comparison make sense to you.
   Commit: `Add optional income and price comparison`
 
-- [ ] **7. A navigation bar moves between Home, Did you know?, and My farm**
+- [x] **7. A navigation bar moves between Home, Did you know?, and My farm**
   Becomes usable: A plain top bar with the brand and three links. Opening the app still plays the animation and fact, then lands on My farm; the bar then lets him go back to Home (animation again), see another verified fact on Did you know?, or return to My farm without losing what he typed or his result.
   Why now: The learner asked for it after seeing the finished app; it is a presentation change on top of the working estimate, so it comes after every feature slice and cannot break the kernel.
   PRD ref: `prd.md > Navigation bar`, `prd.md > Screens and Layout`, `prd.md > Look and Feel`

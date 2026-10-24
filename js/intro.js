@@ -1,31 +1,45 @@
-// Opening: the cane-growth animation plays, then one fact (picked at random) appears with a close button.
+// Home view: the cane-growth animation plays, then one fact (picked at random) appears with a button.
+// Also picks the fact for the "Did you know?" view.
 import { facts } from '../data/facts.js';
 import { log } from './log.js';
 
 const GROW_MS = 3200; // matches the CSS animation length
 
-export function pickFact(list = facts, random = Math.random) {
-  return list[Math.floor(random() * list.length)];
+// A random fact; `not` is a fact to avoid, so "Show another fact" always changes it.
+export function pickFact(list = facts, random = Math.random, not = null) {
+  const choices = list.length > 1 ? list.filter((f) => f !== not) : list;
+  return choices[Math.floor(random() * choices.length)];
 }
 
-export function playIntro() {
-  const root = document.getElementById('intro');
+let timer = null;
+
+// Plays the animation from the start. `onFactShown` runs when the fact appears (the nav bar uses it).
+export function playHome(onFactShown = () => {}) {
+  const home = document.getElementById('view-home');
   const factBox = document.getElementById('intro-fact');
-  const close = () => {
-    root.hidden = true;
-    log('intro', 'closed, form is showing');
-  };
-  document.getElementById('intro-close').addEventListener('click', close);
+  clearTimeout(timer);
+  factBox.hidden = true;
 
   const fact = pickFact();
   document.getElementById('intro-text').textContent = fact.text;
   document.getElementById('intro-source').textContent = `Source: ${fact.source}`;
 
-  root.hidden = false;
+  home.classList.remove('playing');
+  void home.offsetWidth; // forces the browser to restart the CSS animation
+  home.classList.add('playing');
   log('intro', 'animation started');
-  setTimeout(() => {
+  timer = setTimeout(() => {
     factBox.hidden = false;
-    document.getElementById('intro-close').focus();
     log('intro', 'fact shown', fact.text);
+    onFactShown();
   }, GROW_MS);
+}
+
+// "Did you know?" view: fills in a fact, and a new one each time `another` is true.
+let current = null;
+export function showFact(another = false) {
+  current = pickFact(facts, Math.random, another ? current : null);
+  document.getElementById('dyk-text').textContent = current.text;
+  document.getElementById('dyk-source').textContent = `Source: ${current.source}`;
+  log('facts', 'showing fact', current.text);
 }
