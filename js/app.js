@@ -2,6 +2,7 @@
 // read the form -> check it -> find the place -> get the weather -> estimate -> show the result.
 import { validateAll } from './validate.js';
 import { estimate } from './estimate.js';
+import { buildNote } from './note.js';
 import { findPlace, describePlace, getBrowserLocation, reverseGeocode } from './location.js';
 import { getSeasonWeather, typicalSeasonWeather } from './weather.js';
 import { log } from './log.js';
@@ -47,6 +48,7 @@ function showResult(values, weather, placeText) {
   $('result-per-acre').textContent = `${r.lowPerAcre} to ${r.highPerAcre} tonnes per acre`;
   $('result-total').textContent =
     `For your ${values.acres} acres: about ${r.lowTotal} to ${r.highTotal} tonnes in total.`;
+  $('result-note').textContent = buildNote(r, values.acres);
   $('result-label').textContent = r.isLive
     ? `This is an estimate based on ${SAMPLE_LABEL}, adjusted for the real weather near ${placeText} since you planted.`
     : `This is an estimate based on ${SAMPLE_LABEL}, and on typical conditions, not live weather, so the range is wider.`;

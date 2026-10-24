@@ -39,7 +39,7 @@ Build mode: learn
   Learner check: Tap "Use my location", watch the browser's own prompt, allow it, and see the weather appear. Then refuse it (or reset the permission) and confirm the typed field appears.
   Commit: `Add browser location with typed fallback`
 
-- [ ] **4. The result includes a plain planning note**
+- [x] **4. The result includes a plain planning note**
   Becomes usable: Under every estimate, a short sentence or two about planning money and labor that refers to the numbers shown.
   Why now: It finishes the result screen the PRD describes, and it is cheap once the estimate exists.
   PRD ref: `prd.md > Planning note`, `prd.md > Screens and Layout`
