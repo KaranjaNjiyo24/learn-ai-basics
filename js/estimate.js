@@ -2,7 +2,7 @@
 // Steps: baseline range -> one factor per input -> multiply the factors -> apply to baseline
 //        -> widen the range if the weather was not live.
 import {
-  baseline, varieties, phBands, nutrientBands, rainfall, widenWhenNotLive,
+  baseline, varieties, phBands, nutrientBands, rainfall, widenWhenNotLive, maturity,
 } from '../data/reference-data.js';
 import { log } from './log.js';
 
@@ -14,11 +14,17 @@ function nutrientFactor(kind, value) {
   return nutrientBands[kind].find((b) => value < b.below).factor;
 }
 
+// Rain the crop needs for its age so far, capped at the full crop cycle.
+function rainNeededMm(ageDays) {
+  return rainfall.neededMm * (Math.min(ageDays, rainfall.seasonDays) / rainfall.seasonDays);
+}
+
 function rainFactor(totalMm, ageDays) {
-  const share = Math.min(ageDays, rainfall.seasonDays) / rainfall.seasonDays;
-  const ratio = totalMm / (rainfall.neededMm * share);
+  const ratio = totalMm / rainNeededMm(ageDays);
   return rainfall.bands.find((b) => ratio < b.ratioBelow).factor;
 }
+
+const DAYS_PER_MONTH = 30.44;
 
 const round1 = (n) => Math.round(n * 10) / 10;
 
@@ -49,6 +55,10 @@ export function estimate(inputs, weather) {
     baselineHigh: base.high,
     varietyFound,
     factors,
+    rainNeededMm: Math.round(rainNeededMm(weather.ageDays)),
+    ageMonths: round1(weather.ageDays / DAYS_PER_MONTH),
+    percentToMaturity: Math.min(100, Math.round((weather.ageDays / DAYS_PER_MONTH / maturity.maxMonths) * 100)),
+    pastMaturityWindow: weather.ageDays / DAYS_PER_MONTH > maturity.maxMonths,
     combined: Math.round(combined * 1000) / 1000,
     isLive: weather.isLive,
     lowPerAcre: round1(low),

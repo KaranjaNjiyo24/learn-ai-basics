@@ -19,7 +19,7 @@ export const phBands = [
   { min: 0, max: 14, factor: 0.8 },
 ];
 
-// Nutrient levels, assumed to be in mg/kg (ppm). CHECK what unit your friend's report uses.
+// Nutrient levels, assumed to be in mg/kg (ppm). CHECK what unit the soil report uses.
 export const nutrientBands = {
   n: [{ below: 20, factor: 0.9 }, { below: Infinity, factor: 1.0 }],
   p: [{ below: 15, factor: 0.92 }, { below: Infinity, factor: 1.0 }],
@@ -27,10 +27,13 @@ export const nutrientBands = {
 };
 
 // Rainfall since planting, compared with what the crop needs for its age so far.
-// neededMm is for a whole season of seasonDays; a younger crop needs a proportional share.
+// neededMm is for the whole crop cycle of seasonDays; a younger crop needs a proportional share.
+// Sugarcane here matures in 18 to 24 months, so the cycle is the 21-month midpoint (about 640 days).
+// neededMm keeps the same daily rate as a 1200 mm year (about 3.3 mm per day).
+export const maturity = { minMonths: 18, maxMonths: 24, cycleDays: 640 };
 export const rainfall = {
-  neededMm: 1200,
-  seasonDays: 365,
+  neededMm: 2100,
+  seasonDays: maturity.cycleDays,
   bands: [
     { ratioBelow: 0.6, factor: 0.8 },
     { ratioBelow: 0.8, factor: 0.9 },
@@ -40,7 +43,7 @@ export const rainfall = {
 };
 
 // Used when live weather is unavailable: typical conditions, per day since planting.
-export const typicalWeather = { rainfallPerDayMm: 1200 / 365, avgTempC: 24 };
+export const typicalWeather = { rainfallPerDayMm: 2100 / 640, avgTempC: 24 };
 
 // Extra spread added when the weather is not live.
 export const widenWhenNotLive = { low: 0.9, high: 1.1 };
@@ -50,5 +53,5 @@ export const limits = {
   acres: { invalidBelow: 0, unusualAbove: 500 },
   ph: { invalidBelow: 0, invalidAbove: 14, unusualBelow: 4, unusualAbove: 9 },
   nutrient: { invalidBelow: 0, unusualAbove: 1000 },
-  plantingAgeDays: { unusualAbove: 730 },
+  plantingAgeDays: { unusualAbove: 800 },
 };

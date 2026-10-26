@@ -8,7 +8,7 @@ import { initNav } from './nav.js';
 import { findPlace, describePlace, getBrowserLocation, reverseGeocode } from './location.js';
 import { getSeasonWeather, typicalSeasonWeather } from './weather.js';
 import { log } from './log.js';
-import { SAMPLE_LABEL } from '../data/reference-data.js';
+import { SAMPLE_LABEL, maturity } from '../data/reference-data.js';
 
 const FIELDS = ['acres', 'variety', 'plantingDate', 'place', 'ph', 'n', 'p', 'k'];
 const MONEY_FIELDS = ['newPrice', 'lastPrice', 'lastSpending'];
@@ -73,20 +73,34 @@ function showResult(values, weather, placeText) {
     : `This is an estimate based on ${SAMPLE_LABEL}, and on typical conditions, not live weather, so the range is wider.`;
 
   const f = r.factors;
+  const effect = (x) => (x === 1 ? 'no change' : `${Math.round((1 - x) * 100)}% lower`);
+  const planted = new Date(values.plantingDate);
+  const addMonths = (n) => {
+    const d = new Date(planted);
+    d.setMonth(d.getMonth() + n);
+    return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+  };
+  const harvestWindow = `${addMonths(maturity.minMonths)} to ${addMonths(maturity.maxMonths)}`;
+  const maturityText = r.pastMaturityWindow
+    ? `Your cane is ${r.ageMonths} months old, past the usual ${maturity.minMonths} to ${maturity.maxMonths} months, so it is ready or overdue to cut.`
+    : `Your cane is ${r.ageMonths} months old, about ${r.percentToMaturity}% of the way to the latest usual maturity of ${maturity.maxMonths} months. Sugarcane here usually matures in ${maturity.minMonths} to ${maturity.maxMonths} months, so expect to cut around ${harvestWindow}.`;
   $('result-detail').innerHTML = `
+    <p>${maturityText}</p>
     <p>We start from a range of ${r.baselineLow} to ${r.baselineHigh} tonnes per acre
     (${r.varietyFound ? 'for your variety' : 'a general range: your variety is not in the sample table yet'}),
     then adjust it for each thing you told us. A factor of 1 means no change.</p>
     <p>Weather over the ${weather.ageDays} days since planting${r.isLive ? ` near ${placeText}` : ' (typical values)'}:
-    about ${weather.rainfallTotalMm} mm of rain, average temperature ${weather.avgTempC} °C.</p>
+    about ${weather.rainfallTotalMm} mm of rain (a crop this age needs about ${r.rainNeededMm} mm), average temperature ${weather.avgTempC} °C.</p>
     <table>
-      <tr><td>Soil pH</td><td>${f.ph}</td></tr>
-      <tr><td>Nitrogen</td><td>${f.n}</td></tr>
-      <tr><td>Phosphorus</td><td>${f.p}</td></tr>
-      <tr><td>Potassium</td><td>${f.k}</td></tr>
-      <tr><td>Rainfall so far</td><td>${f.rain}</td></tr>
-      <tr><td><b>All together</b></td><td><b>${r.combined}</b></td></tr>
-    </table>`;
+      <tr><th>What</th><th>Factor</th><th>Effect</th></tr>
+      <tr><td>Soil pH</td><td>${f.ph}</td><td>${effect(f.ph)}</td></tr>
+      <tr><td>Nitrogen</td><td>${f.n}</td><td>${effect(f.n)}</td></tr>
+      <tr><td>Phosphorus</td><td>${f.p}</td><td>${effect(f.p)}</td></tr>
+      <tr><td>Potassium</td><td>${f.k}</td><td>${effect(f.k)}</td></tr>
+      <tr><td>Rainfall so far</td><td>${f.rain}</td><td>${effect(f.rain)}</td></tr>
+      <tr><td><b>All together</b></td><td><b>${r.combined}</b></td><td><b>${effect(r.combined)}</b></td></tr>
+    </table>
+    <p>Low = baseline low × all together. High = baseline high × all together.${r.isLive ? '' : ' The range is then widened because the weather was typical, not live.'}</p>`;
   $('result').hidden = false;
   $('result').scrollIntoView({ behavior: 'smooth' });
 }

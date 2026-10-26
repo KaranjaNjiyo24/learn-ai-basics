@@ -5,7 +5,7 @@ status: approved
 
 # Shamba Bora — Product Requirements
 
-A phone-friendly app that gives a sugarcane farmer an honest pre-harvest estimate of his yield per acre, so he can plan money and labor. Built first for the learner's friend, who leased 10 acres and is growing sugarcane.
+A phone-friendly app that gives a sugarcane farmer an honest pre-harvest estimate of his yield per acre, so he can plan money and labor. Built first for John, who leased 10 acres and is growing sugarcane.
 Source: `scope.md > The Unique Kernel`, `scope.md > Who It's For`, `scope.md > The Core Loop`.
 
 ## The Core Journey

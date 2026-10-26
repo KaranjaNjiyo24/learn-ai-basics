@@ -46,7 +46,7 @@ Build mode: learn
   Spec ref: `spec.md > Components > Planning note`
   Build: Add `note.js` with a few sentence templates filled from the estimate, and show it on the result screen.
   Verify (mechanical): Run `note.js` in Node with several estimates (including a wide range) and confirm the text includes the actual numbers and never prints empty or undefined values.
-  Learner check: Run an estimate and read the note. Say whether it is useful to your friend, and what you would change in the wording.
+  Learner check: Run an estimate and read the note. Say whether it is useful to John, and what you would change in the wording.
   Commit: `Add planning note to result`
 
 - [x] **5. The app opens with the sugarcane animation and a verified fact**
